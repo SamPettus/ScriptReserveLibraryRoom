@@ -1,0 +1,48 @@
+from selenium import webdriver
+import time
+
+logins = [['spettus','Qj55,yu6'],['KrishnaNanda','Mohan1968']]
+groupNames = ['2dogs4boys','githubRepo','scriptedThisRoom']
+def getOpenRooms(driver):
+        url = 'http://libcal.library.ucsb.edu/booking/24hour'
+        driver.get(url)
+        changeDate=driver.find_elements_by_xpath('//*[@id="s-lc-rm-cal"]/div/table/tbody/tr[2]/td[7]/a')
+        changeDate[0].click()
+        info = driver.find_elements_by_class_name('lc_rm_a')
+        print(len(info))
+        for i in info:
+            print(i.get_attribute("title"))
+        return info
+def confirmBooking(roomAndTime, driver):
+    roomAndTime.click()
+    contButton = driver.find_elements_by_xpath('//*[@id="rm_tc_cont"]')
+    contButton[0].click()
+    confirmButton = driver.find_elements_by_xpath('//*[@id="s-lc-rm-sub"]')
+    confirmButton[0].click()
+    time.sleep(0.8)
+    usernameField = driver.find_elements_by_css_selector('#username')
+    usernameField[0].send_keys(logins[0][0])
+    passwordField = driver.find_element_by_css_selector('#password')
+    passwordField.send_keys(logins[0][1])
+    loginButton = driver.find_element_by_css_selector('#fm1 > section:nth-child(3) > input.btn-submit.btn.btn-lg.btn-primary.btn-block')
+    loginButton.click()
+    groupNameButton = driver.find_elements_by_xpath('//*[@id="nick"]')
+    while(groupNameButton == []):
+        groupNameButton = driver.find_elements_by_xpath('//*[@id="nick"]')
+    groupNameButton[0].send_keys(groupNames[2])
+
+    finalSubmit = driver.find_element_by_xpath('//*[@id="s-lc-rm-sub"]')
+    finalSubmit.click()
+
+
+def main():
+    driver = webdriver.Firefox()
+    x = getOpenRooms(driver)
+    if x == []:
+        print("No bookings avialble")
+        return
+    else:
+        confirmBooking(x[0], driver)
+
+
+main()
