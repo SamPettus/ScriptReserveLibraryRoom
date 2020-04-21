@@ -1,8 +1,8 @@
 from selenium import webdriver
 import time
 
-logins = [['spettus','Qj55,yu6'],['KrishnaNanda','Mohan1968']]
-groupNames = ['2dogs4boys','githubRepo','scriptedThisRoom']
+logins = [] #To be filled
+groupNames = [] #To be filled
 def getOpenRooms(driver):
         url = 'http://libcal.library.ucsb.edu/booking/24hour'
         driver.get(url)
